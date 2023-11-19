@@ -1,1 +1,1 @@
-# Spring-Security-6-JWT-Authentication
+# Spring-Security-6+JWT-Authentication
