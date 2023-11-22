@@ -50,7 +50,7 @@ public class User implements UserDetails{ //Interfaces son como un contrato que 
 
     @Override
     public String getUsername() {
-        return null;  // ----> observacion
+        return userName;  // ----> observacion
     }
 
     @Override
