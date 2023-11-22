@@ -1,6 +1,9 @@
 package com.demo.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +22,24 @@ public class AuthService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    AuthenticationManager authenticationManager;
+
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
     public AuthResponse login(LoginRequest request) {
-        return null;
+        
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken
+                                        (request.getUserName(), request.getPassword()));
+    
+            UserDetails user = userRepository.findByUserName(request.getUserName())
+                                .orElseThrow();                           
+            
+            String token = jwtService.getToken(user);                    
+            return AuthResponse.builder()
+                .token(token)
+                .build();
     }
 
     public AuthResponse register(RegisterRequest request) {
